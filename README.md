@@ -1,40 +1,20 @@
-Below are the steps to get your plugin running. You can also find instructions at:
+# Slote
 
-  https://www.figma.com/plugin-docs/setup/
+a figma plugin for something like sku or room number generator.
 
-This plugin template uses Typescript and NPM, two standard tools in creating JavaScript applications.
+![image](https://user-images.githubusercontent.com/22793771/119259294-24e5e480-bc00-11eb-8fd4-1d15f075daf5.png)
 
-First, download Node.js which comes with NPM. This will allow you to install TypeScript and other
-libraries. You can find the download link here:
+![image](https://user-images.githubusercontent.com/22793771/119259323-52cb2900-bc00-11eb-87ac-ce7d053b41d8.png)
 
-  https://nodejs.org/en/download/
+![image](https://user-images.githubusercontent.com/22793771/119259329-5a8acd80-bc00-11eb-916c-b2f35fd27a49.png)
 
-Next, install TypeScript using the command:
 
-  npm install -g typescript
+## 🚨Attention
 
-Finally, in the directory of your plugin, get the latest type definitions for the plugin API by running:
+remember that selections order are not reliable, so make sure you create elements by the order you want, or it will generate numbers by the element id base on the page it belongs.
 
-  npm install --save-dev @figma/plugin-typings
 
-If you are familiar with JavaScript, TypeScript will look very familiar. In fact, valid JavaScript code
-is already valid Typescript code.
+## Todo
 
-TypeScript adds type annotations to variables. This allows code editors such as Visual Studio Code
-to provide information about the Figma API while you are writing code, as well as help catch bugs
-you previously didn't notice.
-
-For more information, visit https://www.typescriptlang.org/
-
-Using TypeScript requires a compiler to convert TypeScript (code.ts) into JavaScript (code.js)
-for the browser to run.
-
-We recommend writing TypeScript code using Visual Studio code:
-
-1. Download Visual Studio Code if you haven't already: https://code.visualstudio.com/.
-2. Open this directory in Visual Studio Code.
-3. Compile TypeScript to JavaScript: Run the "Terminal > Run Build Task..." menu item,
-    then select "tsc: watch - tsconfig.json". You will have to do this again every time
-    you reopen Visual Studio Code.
-
-That's it! Visual Studio Code will regenerate the JavaScript file every time you save.
+- generate a specific numbers of 'number' without selection, in that way, it will be ordered perfectly.
+  - another input for how many numbers user want to generate, and append on page
