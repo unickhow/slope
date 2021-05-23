@@ -22,7 +22,6 @@
 let isAllowGenerate = false
 
 function checkSubmitAvailable () {
-  // const prefixText = document.getElementById('prefix').value.trim()
   const baseNumberText = document.getElementById('base-number').value.trim()
 
   isAllowGenerate = !!baseNumberText
@@ -58,3 +57,9 @@ document.getElementById('cancel').onclick = () => {
 }
 
 </script>
+
+<style>
+  h2 {
+    color: red;
+  }
+</style>

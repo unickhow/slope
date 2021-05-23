@@ -32,6 +32,7 @@ figma.ui.onmessage = (payload) => __awaiter(this, void 0, void 0, function* () {
         }
         const genNextNumber = setBaseNumberPileUp(baseNumber, order, baseNumber.length);
         for (let i = 0; i < nodesLength; i += 1) {
+            //! Noted: order of page selections are not reliable.
             const result = `${prefix}${genNextNumber()}`;
             nodes[i].characters = result;
             nodes[i].name = result;
