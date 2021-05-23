@@ -1,23 +1,31 @@
 <div id="app">
-  <h2>Start from</h2>
   <div class="form-group">
     <label for="prefix">Prefix</label>
-    <input type="text" id="prefix" placeholder="B">
+    <input type="text" id="prefix" class="input" placeholder="SKU" tabindex="1">
   </div>
   <div class="form-group">
     <label for="base-number">Base Number</label>
-    <input
-      id="base-number"
-      type="text"
-      placeholder="505">
+    <input type="text" id="base-number" class="input" placeholder="0013845" tabindex="2">
   </div>
-  <select name="order" id="order">
-    <option value="asc" selected>Asc</option>
-    <option value="desc">Desc</option>
-  </select>
-  <button id="generate" disabled>Generate</button>
-  <button id="cancel">Cancel</button>
+  <div class="form-group">
+    <label for="order">Order</label>
+    <div class="control">
+      <label class="radio">
+        <input type="radio" name="order" value="asc" checked tabindex="3">
+        Asc
+      </label>
+      <label class="radio">
+        <input type="radio" name="order" value="desc" tabindex="4">
+        Desc
+      </label>
+    </div>
+  </div>
+  <div class="btn-group">
+    <button id="cancel" class="button is-info is-inverted" tabindex="6">Cancel</button>
+    <button id="generate" class="button is-info" disabled tabindex="5">Generate</button>
+  </div>
 </div>
+
 <script>
 let isAllowGenerate = false
 
@@ -41,7 +49,7 @@ document.getElementById('base-number').oninput = (e) => {
 document.getElementById('generate').onclick = () => {
   const prefix = document.getElementById('prefix').value;
   const baseNumber = document.getElementById('base-number').value;
-  const order = document.getElementById('order').value;
+  const order = document.querySelector('input[name="order"]:checked').value;
   parent.postMessage({
     pluginMessage: {
       type: 'generate',
@@ -55,11 +63,37 @@ document.getElementById('generate').onclick = () => {
 document.getElementById('cancel').onclick = () => {
   parent.postMessage({ pluginMessage: { type: 'cancel' } }, '*')
 }
-
 </script>
 
 <style>
-  h2 {
-    color: red;
+  @import "https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css";
+  #app {
+    padding: 1rem;
+  }
+  #app .form-group {
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  #app .form-group label {
+    font-weight: bold;
+    font-size: 1rem;
+  }
+  #app .form-group input[type=text] {
+    max-width: 150px;
+  }
+  #app .form-group input[type=radio] {
+    margin-left: 1rem;
+  }
+  #app .btn-group {
+    display: flex;
+    margin-top: 4rem;
+  }
+  #app .btn-group #cancel {
+    width: 80px;
+  }
+  #app .btn-group #generate {
+    width: 100%;
   }
 </style>

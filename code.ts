@@ -1,4 +1,7 @@
-figma.showUI(__html__);
+figma.showUI(__html__, {
+  width: 330,
+  height: 300
+});
 
 function setBaseNumberPileUp (base = '0', order = 'asc', length) {
   const baseNumber = +base
