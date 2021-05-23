@@ -1,0 +1,21 @@
+<h2>Start from</h2>
+<p>Count: <input id="count" value="" placeholder="B505"></p>
+<select name="order" id="order">
+  <option value="asc" selected>Asc</option>
+  <option value="desc">Desc</option>
+</select>
+<button id="create">Create</button>
+<button id="cancel">Cancel</button>
+<script>
+
+document.getElementById('create').onclick = () => {
+  const textbox = document.getElementById('count');
+  const count = parseInt(textbox.value, 10);
+  parent.postMessage({ pluginMessage: { type: 'create-rectangles', count } }, '*')
+}
+
+document.getElementById('cancel').onclick = () => {
+  parent.postMessage({ pluginMessage: { type: 'cancel' } }, '*')
+}
+
+</script>
