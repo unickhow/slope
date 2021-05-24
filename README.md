@@ -1,4 +1,4 @@
-# Slote
+# Slope
 
 a figma plugin for something like sku or room number generator.
 
