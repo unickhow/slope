@@ -19,8 +19,6 @@ function setBaseNumberPileUp (base = '0', order = 'asc', length) {
 }
 
 figma.ui.onmessage = async payload => {
-  await figma.loadFontAsync({ family: "Roboto", style: "Regular" })
-
   const { prefix, baseNumber, order, type } = payload
   const nodes = figma.currentPage.selection
   const nodesLength = nodes.length
@@ -34,6 +32,7 @@ figma.ui.onmessage = async payload => {
 
     for (let i = 0; i < nodesLength; i += 1) {
       //! Noted: order of page selections are not reliable.
+      await figma.loadFontAsync(nodes[i].fontName)
       const result = `${prefix}${genNextNumber()}`
       nodes[i].characters = result
       nodes[i].name = result
