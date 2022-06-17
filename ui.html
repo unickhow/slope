@@ -1,68 +1,75 @@
 <div id="app">
-  <div class="form-group">
-    <label for="prefix">Prefix</label>
-    <input type="text" id="prefix" class="input" placeholder="SKU" tabindex="1">
-  </div>
-  <div class="form-group">
-    <label for="base-number">Base Number</label>
-    <input type="text" id="base-number" class="input" placeholder="0013845" tabindex="2">
-  </div>
-  <div class="form-group">
-    <label for="order">Order</label>
-    <div class="control">
-      <label class="radio">
-        <input type="radio" name="order" value="asc" checked tabindex="3">
-        Asc
-      </label>
-      <label class="radio">
-        <input type="radio" name="order" value="desc" tabindex="4">
-        Desc
-      </label>
+  <div v-cloak v-scope>
+    <div class="string-switcher">
+      <div class="form-group">
+        <input v-show="!isReverseStringNumber" v-model="textString" type="text" id="prefix-head" class="input" style="text-align: right;" placeholder="SKU" tabindex="1">
+        <input v-show="isReverseStringNumber" v-model="numberString" type="text" id="base-number-head" class="input" style="text-align: right;" placeholder="0013845" tabindex="2">
+      </div>
+      <button class="btn-swap button is-white" @click="isReverseStringNumber = !isReverseStringNumber">
+        <img width="30" height="30" src="https://cdn-icons-png.flaticon.com/512/7305/7305080.png" alt="">
+      </button>
+      <div class="form-group">
+        <input v-show="!isReverseStringNumber" v-model="numberString" type="text" id="base-number-tail" class="input" placeholder="0013845" tabindex="2">
+        <input v-show="isReverseStringNumber" v-model="textString" type="text" id="prefix-tail" class="input" placeholder="SKU" tabindex="1">
+      </div>
     </div>
-  </div>
-  <div class="btn-group">
-    <button id="cancel" class="button is-info is-inverted" tabindex="6">Cancel</button>
-    <button id="generate" class="button is-info" disabled tabindex="5">Generate</button>
+    <div class="form-group">
+      <div class="control">
+        <label class="radio">
+          <input v-model="orderDirection" type="radio" name="order" value="asc" tabindex="3">
+          Asc
+        </label>
+        <label class="radio">
+          <input v-model="orderDirection" type="radio" name="order" value="desc" tabindex="4">
+          Desc
+        </label>
+      </div>
+    </div>
+    <div class="btn-group">
+      <button id="cancel" class="button is-info is-inverted" tabindex="6" @click="handleCancel">Cancel</button>
+      <button id="generate" class="button is-info" :disabled="!isAllowGenerate" tabindex="5" @click="handleGenerate">Generate</button>
+    </div>
   </div>
 </div>
 
-<script>
-let isAllowGenerate = false
+<script type="module">
+  import { createApp } from 'https://unpkg.com/petite-vue?module'
 
-function checkSubmitAvailable () {
-  const baseNumberText = document.getElementById('base-number').value.trim()
+  document.getElementById('base-number-head').oninput = (e) => {
+    e.target.value = e.target.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1')
+  }
+  document.getElementById('base-number-tail').oninput = (e) => {
+    e.target.value = e.target.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1')
+  }
 
-  isAllowGenerate = !!baseNumberText
+  createApp({
+    textString: '',
+    numberString: '',
+    orderDirection: 'asc',
+    isReverseStringNumber: false,
+    get isAllowGenerate () {
+      return !!this.textString && !!this.numberString
+    },
+    handleGenerate () {
+      const prefix = this.textString;
+      const baseNumber = this.numberString;
+      const order = this.orderDirection;
+      const isReverse = this.isReverseStringNumber
+      parent.postMessage({
+        pluginMessage: {
+          type: 'generate',
+          prefix,
+          baseNumber,
+          order,
+          isReverse
+        }
+      }, '*')
+    },
 
-  document.getElementById('generate').disabled = !isAllowGenerate
-}
-
-document.getElementById('prefix').oninput = (e) => {
-  checkSubmitAvailable()
-}
-
-document.getElementById('base-number').oninput = (e) => {
-  e.target.value = e.target.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');
-  checkSubmitAvailable()
-}
-
-document.getElementById('generate').onclick = () => {
-  const prefix = document.getElementById('prefix').value;
-  const baseNumber = document.getElementById('base-number').value;
-  const order = document.querySelector('input[name="order"]:checked').value;
-  parent.postMessage({
-    pluginMessage: {
-      type: 'generate',
-      prefix,
-      baseNumber,
-      order
+    handleCancel () {
+      parent.postMessage({ pluginMessage: { type: 'cancel' } }, '*')
     }
-  }, '*')
-}
-
-document.getElementById('cancel').onclick = () => {
-  parent.postMessage({ pluginMessage: { type: 'cancel' } }, '*')
-}
+  }).mount()
 </script>
 
 <style>
@@ -70,18 +77,11 @@ document.getElementById('cancel').onclick = () => {
   #app {
     padding: 1rem;
   }
+  #app [v-cloak] {
+    display: none;
+  }
   #app .form-group {
-    margin-bottom: 1.5rem;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  #app .form-group label {
-    font-weight: bold;
-    font-size: 1rem;
-  }
-  #app .form-group input[type=text] {
-    max-width: 150px;
   }
   #app .form-group input[type=radio] {
     margin-left: 1rem;
@@ -95,5 +95,12 @@ document.getElementById('cancel').onclick = () => {
   }
   #app .btn-group #generate {
     width: 100%;
+  }
+  #app .string-switcher {
+    display: flex;
+    margin-bottom: 1rem;
+  }
+  #app .string-switcher .btn-swap {
+    margin: 0 .5rem;
   }
 </style>

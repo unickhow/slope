@@ -1,7 +1,10 @@
 {
-  "name": "slope",
+  "name": "Slope",
   "id": "978200655090799378",
   "api": "1.0.0",
   "main": "code.js",
-  "ui": "ui.html"
+  "ui": "ui.html",
+  "editorType": [
+    "figma"
+  ]
 }

@@ -1,6 +1,6 @@
 figma.showUI(__html__, {
-  width: 330,
-  height: 300
+  width: 420,
+  height: 220
 });
 
 function setBaseNumberPileUp (base = '0', order = 'asc', length) {
@@ -19,7 +19,7 @@ function setBaseNumberPileUp (base = '0', order = 'asc', length) {
 }
 
 figma.ui.onmessage = async payload => {
-  const { prefix, baseNumber, order, type } = payload
+  const { prefix, baseNumber, order, type, isReverse } = payload
   const nodes = figma.currentPage.selection
   const nodesLength = nodes.length
   if (type === 'generate') {
@@ -32,8 +32,11 @@ figma.ui.onmessage = async payload => {
 
     for (let i = 0; i < nodesLength; i += 1) {
       //! Noted: order of page selections are not reliable.
+      console.log('🚀 ~ file: code.ts ~ line 36 ~ nodes[i]', nodes[i])
       await figma.loadFontAsync(nodes[i].fontName)
-      const result = `${prefix}${genNextNumber()}`
+      const result = isReverse
+        ? `${genNextNumber()}${prefix}`
+        : `${prefix}${genNextNumber()}`
       nodes[i].characters = result
       nodes[i].name = result
     }
