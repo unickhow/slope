@@ -18,3 +18,6 @@ remember that selections order are not reliable, so make sure you create element
 
 - generate a specific numbers of 'number' without selection, in that way, it will be ordered perfectly.
   - another input for how many numbers user want to generate, and append on page
+
+
+<a href="https://www.buymeacoffee.com/unickhow" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
