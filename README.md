@@ -1,20 +1,18 @@
-# Slope
+# Vue 3 + TypeScript + Vite
 
-a figma plugin for something like sku or room number generator.
+This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
 
-![image](https://user-images.githubusercontent.com/22793771/119259294-24e5e480-bc00-11eb-8fd4-1d15f075daf5.png)
+## Recommended IDE Setup
 
-![image](https://user-images.githubusercontent.com/22793771/119259323-52cb2900-bc00-11eb-87ac-ce7d053b41d8.png)
+- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
 
-![image](https://user-images.githubusercontent.com/22793771/119259329-5a8acd80-bc00-11eb-916c-b2f35fd27a49.png)
+## Type Support For `.vue` Imports in TS
 
+TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
 
-## 🚨Attention
+If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
 
-remember that selections order are not reliable, so make sure you create elements by the order you want, or it will generate numbers by the element id base on the page it belongs.
-
-
-## Todo
-
-- generate a specific numbers of 'number' without selection, in that way, it will be ordered perfectly.
-  - another input for how many numbers user want to generate, and append on page
+1. Disable the built-in TypeScript Extension
+   1. Run `Extensions: Show Built-in Extensions` from VSCode's command palette
+   2. Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
+2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
