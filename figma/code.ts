@@ -1,33 +1,49 @@
-// This plugin will open a window to prompt the user to enter a number, and
-// it will then create that many rectangles on the screen.
+figma.showUI(__html__, {
+  width: 420,
+  height: 220
+});
 
-// This file holds the main code for the plugins. It has access to the *document*.
-// You can access browser APIs in the <script> tag inside "ui.html" which has a
-// full browser environment (see documentation).
+function setBaseNumberPileUp (base = '0', order = 'asc', length) {
+  const baseNumber = +base
+  let stack = 0
+  let res
+  return () => {
+    res = order === 'asc'
+      ? baseNumber + stack
+      : baseNumber - stack
 
-// This shows the HTML page in "ui.html".
-figma.showUI(__html__);
+    stack += 1
 
-// Calls to "parent.postMessage" from within the HTML page will trigger this
-// callback. The callback will be passed the "pluginMessage" property of the
-// posted message.
-figma.ui.onmessage = msg => {
-  // One way of distinguishing between different types of messages sent from
-  // your HTML page is to use an object with a "type" property like this.
-  if (msg.type === 'create-rectangles') {
-    const nodes: SceneNode[] = [];
-    for (let i = 0; i < msg.count; i++) {
-      const rect = figma.createRectangle();
-      rect.x = i * 150;
-      rect.fills = [{type: 'SOLID', color: {r: 1, g: 0.5, b: 0}}];
-      figma.currentPage.appendChild(rect);
-      nodes.push(rect);
+    return res.toString().padStart(length, '0')
+  }
+}
+
+figma.ui.onmessage = async payload => {
+  const { prefix, baseNumber, order, type, isReverse } = payload
+  const nodes = figma.currentPage.selection
+  const nodesLength = nodes.length
+  if (type === 'generate') {
+    const isInvalid = nodes.some(node => node.type !== 'TEXT');
+    if (isInvalid) {
+      return "Select a single text node."
     }
-    figma.currentPage.selection = nodes;
-    figma.viewport.scrollAndZoomIntoView(nodes);
+
+    const genNextNumber = setBaseNumberPileUp(baseNumber, order, baseNumber.length)
+
+    for (let i = 0; i < nodesLength; i += 1) {
+      //! Noted: order of page selections are not reliable.
+      console.log('🚀 ~ file: code.ts ~ line 36 ~ nodes[i]', nodes[i])
+      await figma.loadFontAsync(nodes[i].fontName)
+      const result = isReverse
+        ? `${genNextNumber()}${prefix}`
+        : `${prefix}${genNextNumber()}`
+      nodes[i].characters = result
+      nodes[i].name = result
+    }
   }
 
-  // Make sure to close the plugin when you're done. Otherwise the plugin will
-  // keep running, which shows the cancel button at the bottom of the screen.
-  figma.closePlugin();
+  // on cancel
+  if (type === 'cancel') {
+    figma.closePlugin();
+  }
 };
