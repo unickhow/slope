@@ -32,7 +32,6 @@ figma.ui.onmessage = async payload => {
 
     for (let i = 0; i < nodesLength; i += 1) {
       //! Noted: order of page selections are not reliable.
-      console.log('🚀 ~ file: code.ts ~ line 36 ~ nodes[i]', nodes[i])
       await figma.loadFontAsync(nodes[i].fontName)
       const result = isReverse
         ? `${genNextNumber()}${prefix}`
