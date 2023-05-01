@@ -1,24 +1,32 @@
 <script setup lang="ts">
 import { reactive, computed } from 'vue'
-const state = reactive({
+
+const state = reactive<{
+  textString: string;
+  numberString: string;
+  orderDirection: 'asc' | 'desc'
+  isReverseStringNumber: boolean
+}>({
   textString: '',
   numberString: '',
   orderDirection: 'asc',
-  isReverseStringNumber: false,
+  isReverseStringNumber: false
 })
 
 const isAllowGenerate = computed(() => {
-  return !!state.textString && !!state.numberString
+  return !!state.numberString
 })
 
 function sanitizeInput() {
-  state.numberString = state.numberString.replace(/[^0-9\.]/g, '');
+  state.numberString = state.numberString.replace(/[^0-9\.]/g, '')
 }
 
 function handleGenerate () {
-  const prefix = state.textString;
-  const baseNumber = state.numberString;
-  const order = state.orderDirection;
+  if (!isAllowGenerate.value) return false
+
+  const prefix = state.textString
+  const baseNumber = state.numberString
+  const order = state.orderDirection
   const isReverse = state.isReverseStringNumber
   parent.postMessage({
     pluginMessage: {
@@ -46,17 +54,17 @@ function handleCancel () {
           type="text"
           id="prefix-head"
           class="input__field w-full text-right"
-          placeholder="SKU"
-          tabindex="1">
+          placeholder="e.g. SKU (optional)"
+          @keydown.enter="handleGenerate">
         <input
           v-show="state.isReverseStringNumber"
           v-model="state.numberString"
           type="text"
           id="base-number-head"
           class="input__field w-full text-right"
-          placeholder="0013845"
-          tabindex="2"
-          @input="sanitizeInput">
+          placeholder="e.g. 0013845"
+          @input="sanitizeInput"
+          @keydown.enter="handleGenerate">
       </div>
       <button
         class="button button-ghost text-gray-800"
@@ -70,17 +78,17 @@ function handleCancel () {
           type="text"
           id="base-number-tail"
           class="input__field w-full"
-          placeholder="0013845"
-          tabindex="2"
-          @input="sanitizeInput">
+          placeholder="e.g. 0013845"
+          @input="sanitizeInput"
+          @keydown.enter="handleGenerate">
         <input
           v-show="state.isReverseStringNumber"
           v-model="state.textString"
           type="text"
           id="prefix-tail"
           class="input__field w-full"
-          placeholder="SKU"
-          tabindex="1">
+          placeholder="e.g. SKU (optional)"
+          @keydown.enter="handleGenerate">
       </div>
     </div>
     <div class="flex gap-6">
@@ -116,7 +124,6 @@ function handleCancel () {
       <button
         id="cancelButton"
         class="button button-ghost w-1/3"
-        tabindex="6"
         @click="handleCancel">
         <i class="i-mdi-close"></i>
         <span>Cancel</span>
@@ -128,7 +135,6 @@ function handleCancel () {
           'is-disabled': !isAllowGenerate
         }"
         :disabled="!isAllowGenerate"
-        tabindex="5"
         @click="handleGenerate">
         <i class="i-mdi-check"></i>
         <span>Generate</span>
