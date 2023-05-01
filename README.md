@@ -12,7 +12,7 @@ remember that selections order are not reliable, so make sure you create element
 
 ## Todo
 
-- [ ] support date type
+- [x] support date type
 - [ ] randomize
 - [ ] append to current page if no selection
 

@@ -1,15 +1,36 @@
 <script setup lang="ts">
 import { reactive, computed } from 'vue'
 
+enum ORDER {
+  ASC = 'asc',
+  DESC = 'desc',
+  RANDOM = 'random'
+}
+
+const orderTypes = [
+  {
+    name: ORDER.ASC,
+    icon: 'i-mdi-sort-numeric-ascending'
+  },
+  {
+    name: ORDER.DESC,
+    icon: 'i-mdi-sort-numeric-descending'
+  },
+  {
+    name: ORDER.RANDOM,
+    icon: 'i-mdi-dice-6'
+  }
+]
+
 const state = reactive<{
   textString: string;
   numberString: string;
-  orderDirection: 'asc' | 'desc'
+  orderType: ORDER
   isReverseStringNumber: boolean
 }>({
   textString: '',
   numberString: '',
-  orderDirection: 'asc',
+  orderType: ORDER.ASC,
   isReverseStringNumber: false
 })
 
@@ -26,21 +47,21 @@ function handleGenerate () {
 
   const prefix = state.textString
   const baseNumber = state.numberString
-  const order = state.orderDirection
+  const orderType = state.orderType
   const isReverse = state.isReverseStringNumber
   parent.postMessage({
     pluginMessage: {
-      type: 'generate',
+      action: 'generate',
       prefix,
       baseNumber,
-      order,
+      orderType,
       isReverse
     }
   }, '*')
 }
 
 function handleCancel () {
-  parent.postMessage({ pluginMessage: { type: 'cancel' } }, '*')
+  parent.postMessage({ pluginMessage: { action: 'cancel' } }, '*')
 }
 </script>
 
@@ -91,39 +112,53 @@ function handleCancel () {
           @keydown.enter="handleGenerate">
       </div>
     </div>
+
+    <!-- TODO: customize radio but will lost a11y on tabindex -->
+    <!-- <div class="flex gap-6">
+      <div
+        v-for="type in orderTypes"
+        :key="type.name"
+        class="radio-field">
+        <input
+          type="radio"
+          name="radioGroup"
+          :value="type.name"
+          :for="`radioButton__${type.name}`"
+          class="hidden" />
+        <label
+          :for="`radioButton__${type.name}`"
+          class="flex items-center justify-center cursor-pointer gap-1"
+          :class="{
+            'text-primary': state.orderType === type.name
+          }"
+          @click="state.orderType = type.name">
+          <span :class="[type.icon]" />
+          <span>{{ type.name.toUpperCase() }}</span>
+        </label>
+      </div>
+    </div> -->
+
     <div class="flex gap-6">
       <label
-        for="radioButtonAsc"
+        v-for="type in orderTypes"
+        :key="type.name"
+        :for="`radioButton__${type.name}`"
         class="radio__label cursor-pointer flex items-center gap-1">
         <input
-          id="radioButtonAsc"
-          v-model="state.orderDirection"
+          :id="`radioButton__${type.name}`"
+          v-model="state.orderType"
           type="radio"
           class="m-0"
-          value="asc"
+          :value="type.name"
           name="radioGroup">
-        <span class="i-mdi-sort-numeric-ascending" :class="{ 'opacity-50': state.orderDirection !== 'asc' }"></span>
-        <span class="">ASC</span>
-      </label>
-
-      <label
-        for="radioButtonDesc"
-        class="radio__label cursor-pointer flex items-center gap-1">
-        <input
-          id="radioButtonDesc"
-          v-model="state.orderDirection"
-          type="radio"
-          class="m-0"
-          value="desc"
-          name="radioGroup">
-        <i class="i-mdi-sort-numeric-descending" :class="{ 'opacity-50': state.orderDirection !== 'desc' }"></i>
-        <span class="">DESC</span>
+        <span :class="[{ 'opacity-50': state.orderType !== type.name }, type.icon]" />
+        <span>{{ type.name.toUpperCase() }}</span>
       </label>
     </div>
     <div class="flex gap-2 fixed bottom-0 left-0 w-full p-4">
       <button
         id="cancelButton"
-        class="button button-ghost w-1/3"
+        class="button button-ghost text-gray-500 active:text-gray-900 w-1/3"
         @click="handleCancel">
         <i class="i-mdi-close"></i>
         <span>Cancel</span>

@@ -3,32 +3,34 @@ figma.showUI(__html__, {
   height: 220
 });
 
-function setBaseNumberPileUp (base = '0', order = 'asc', length) {
+function setBaseNumber (base = '0', orderType = 'asc', length) {
   const baseNumber = +base
   let stack = 0
   let res
   return () => {
-    res = order === 'asc'
-      ? baseNumber + stack
-      : baseNumber - stack
-
+    if (orderType === 'asc') {
+      res = baseNumber + stack
+    } else if (orderType === 'desc') {
+      res = baseNumber - stack
+    } else {
+      res = Math.floor(Math.random() * Math.pow(10, length))
+    }
     stack += 1
-
     return res.toString().padStart(length, '0')
   }
 }
 
 figma.ui.onmessage = async payload => {
-  const { prefix, baseNumber, order, type, isReverse } = payload
+  const { prefix, baseNumber, orderType, action, isReverse } = payload
   const nodes = figma.currentPage.selection
   const nodesLength = nodes.length
-  if (type === 'generate') {
+  if (action === 'generate') {
     const isInvalid = nodes.some(node => node.type !== 'TEXT');
     if (isInvalid) {
       return "Select a single text node."
     }
 
-    const genNextNumber = setBaseNumberPileUp(baseNumber, order, baseNumber.length)
+    const genNextNumber = setBaseNumber(baseNumber, orderType, baseNumber.length)
 
     for (let i = 0; i < nodesLength; i += 1) {
       //! Noted: order of page selections are not reliable.
@@ -42,7 +44,7 @@ figma.ui.onmessage = async payload => {
   }
 
   // on cancel
-  if (type === 'cancel') {
+  if (action === 'cancel') {
     figma.closePlugin();
   }
 };
