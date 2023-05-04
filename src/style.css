@@ -6,3 +6,16 @@ html, body {
   box-sizing: border-box;
   font-family: 'Roboto Condensed', sans-serif;
 }
+
+.vc-slope-primary {
+  --vc-accent-50: ##fdf4f4;
+  --vc-accent-100: #FFDAD8;
+  --vc-accent-200: #F3AAA5;
+  --vc-accent-300: #F3AAA5;
+  --vc-accent-400: #f19f9a;
+  --vc-accent-500: #ED8078;
+  --vc-accent-600: #eb756e;
+  --vc-accent-700: #eb756e;
+  --vc-accent-800: #e86057;
+  --vc-accent-900: #E6554C;
+}

@@ -1,26 +1,7 @@
 <script setup lang="ts">
 import { reactive, computed } from 'vue'
-
-enum ORDER {
-  ASC = 'asc',
-  DESC = 'desc',
-  RANDOM = 'random'
-}
-
-const orderTypes = [
-  {
-    name: ORDER.ASC,
-    icon: 'i-mdi-sort-numeric-ascending'
-  },
-  {
-    name: ORDER.DESC,
-    icon: 'i-mdi-sort-numeric-descending'
-  },
-  {
-    name: ORDER.RANDOM,
-    icon: 'i-mdi-dice-6'
-  }
-]
+import { ORDER } from '../types/Order'
+import OrderTypes from './OrderTypes.vue';
 
 const state = reactive<{
   textString: string;
@@ -51,6 +32,7 @@ function handleGenerate () {
   const isReverse = state.isReverseStringNumber
   parent.postMessage({
     pluginMessage: {
+      tab: 'numeric',
       action: 'generate',
       prefix,
       baseNumber,
@@ -67,7 +49,7 @@ function handleCancel () {
 
 <template>
   <div class="numeric-string flex flex-col gap-3 m-4">
-    <div class="flex items-center gap-1">
+    <div class="flex items-center">
       <div class="w-full">
         <input
           v-show="!state.isReverseStringNumber"
@@ -90,7 +72,7 @@ function handleCancel () {
       <button
         class="button button-ghost text-gray-800"
         @click="state.isReverseStringNumber = !state.isReverseStringNumber">
-        <div class="i-mdi-swap-horizontal text-2xl active:text-primary-400"></div>
+        <i class="i-mdi-swap-horizontal text-2xl active:text-primary-400" />
       </button>
       <div class="w-full">
         <input
@@ -138,24 +120,8 @@ function handleCancel () {
       </div>
     </div> -->
 
-    <div class="flex gap-6">
-      <label
-        v-for="type in orderTypes"
-        :key="type.name"
-        :for="`radioButton__${type.name}`"
-        class="radio__label cursor-pointer flex items-center gap-1">
-        <input
-          :id="`radioButton__${type.name}`"
-          v-model="state.orderType"
-          type="radio"
-          class="m-0"
-          :value="type.name"
-          name="radioGroup">
-        <span :class="[{ 'opacity-50': state.orderType !== type.name }, type.icon]" />
-        <span>{{ type.name.toUpperCase() }}</span>
-      </label>
-    </div>
-    <div class="flex gap-2 fixed bottom-0 left-0 w-full p-4">
+    <OrderTypes v-model="state.orderType" />
+    <div class="flex gap-2 fixed bottom-0 left-0 w-full p-4 bg-white">
       <button
         id="cancelButton"
         class="button button-ghost text-gray-500 active:text-gray-900 w-1/3"

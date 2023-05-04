@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive } from 'vue'
+import { ref } from 'vue'
 import NumericString from './components/NumericString.vue';
 import DatetimeString from './components/DatetimeString.vue';
 
@@ -14,11 +14,7 @@ const tabs = [
   }
 ]
 
-const state = reactive<{
-  currentTab: typeof tabs[0]
-}>({
-  currentTab: tabs[0]
-})
+const currentTab = ref<typeof tabs[0]>(tabs[0])
 
 </script>
 
@@ -30,10 +26,12 @@ const state = reactive<{
         :key="tab.name"
         class="py-2 px-4 text-gray-300 cursor-pointer"
         :class="{
-          'text-gray-900': state.currentTab.name === tab.name
+          'text-gray-900': currentTab.name === tab.name
         }"
-        @click="state.currentTab = tab">{{ tab.name }}</label>
+        @click="currentTab = tab">{{ tab.name }}</label>
     </div>
-    <component :is="state.currentTab.component" />
+    <KeepAlive>
+      <component :is="currentTab.component" />
+    </KeepAlive>
   </main>
 </template>
