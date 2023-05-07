@@ -1,50 +1,30 @@
-figma.showUI(__html__, {
-  width: 420,
-  height: 220
-});
+/// <reference types="@figma/plugin-typings" />
+import handleDateTimeTab from './date-time'
+import handleNumericTab from './numeric'
 
-function setBaseNumber (base = '0', orderType = 'asc', length) {
-  const baseNumber = +base
-  let stack = 0
-  let res
-  return () => {
-    if (orderType === 'asc') {
-      res = baseNumber + stack
-    } else if (orderType === 'desc') {
-      res = baseNumber - stack
-    } else {
-      res = Math.floor(Math.random() * Math.pow(10, length))
-    }
-    stack += 1
-    return res.toString().padStart(length, '0')
-  }
+enum TabHeight {
+  numeric = 220,
+  dateTime = 550
 }
 
-figma.ui.onmessage = async payload => {
-  const { prefix, baseNumber, orderType, action, isReverse } = payload
-  const nodes = figma.currentPage.selection
-  const nodesLength = nodes.length
-  if (action === 'generate') {
-    const isInvalid = nodes.some(node => node.type !== 'TEXT');
-    if (isInvalid) {
-      return "Select a single text node."
+figma.showUI(__html__, {
+  width: 350,
+  height: TabHeight.numeric
+})
+
+figma.ui.onmessage = payload => {
+  // TODO: should separate tabChange and others
+  if (payload.action === 'tabChange') {
+    const height = TabHeight[payload.tab] as unknown as number
+    figma.ui.resize(350, height)
+  } else {
+    const tabHandlers = {
+      numeric: handleNumericTab,
+      dateTime: handleDateTimeTab
     }
-
-    const genNextNumber = setBaseNumber(baseNumber, orderType, baseNumber.length)
-
-    for (let i = 0; i < nodesLength; i += 1) {
-      //! Noted: order of page selections are not reliable.
-      await figma.loadFontAsync(nodes[i].fontName)
-      const result = isReverse
-        ? `${genNextNumber()}${prefix}`
-        : `${prefix}${genNextNumber()}`
-      nodes[i].characters = result
-      nodes[i].name = result
+    const tabHandler = tabHandlers[payload.tab]
+    if (tabHandler) {
+      tabHandler(payload)
     }
-  }
-
-  // on cancel
-  if (action === 'cancel') {
-    figma.closePlugin();
   }
 };
