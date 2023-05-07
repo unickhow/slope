@@ -22,7 +22,7 @@ export default async function handleNumericTab (payload) {
   if (action === 'generate') {
     const isInvalid = nodes.some(node => node.type !== 'TEXT');
     if (isInvalid) {
-      return "Select a single text node."
+      return 'Select a single text node.'
     }
 
     const genNextNumber = setBaseNumber(baseNumber, orderType, baseNumber.length)

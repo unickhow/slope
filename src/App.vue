@@ -6,15 +6,27 @@ import DateTimeString from './components/DateTimeString.vue';
 const tabs = [
   {
     name: 'Numeric',
+    key: 'numeric',
     component: NumericString
   },
   {
     name: 'DateTime',
+    key: 'dateTime',
     component: DateTimeString
   }
 ]
 
 const currentTab = ref<typeof tabs[0]>(tabs[0])
+
+function onTabChange (tab: typeof tabs[0]) {
+  currentTab.value = tab
+  parent.postMessage({
+    pluginMessage: {
+      tab: tab.key,
+      action: 'tabChange'
+    }
+  }, '*')
+}
 
 </script>
 
@@ -28,7 +40,7 @@ const currentTab = ref<typeof tabs[0]>(tabs[0])
         :class="{
           'text-gray-900': currentTab.name === tab.name
         }"
-        @click="currentTab = tab">{{ tab.name }}</label>
+        @click="onTabChange(tab)">{{ tab.name }}</label>
     </div>
     <KeepAlive>
       <component :is="currentTab.component" />
