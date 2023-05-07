@@ -2,6 +2,8 @@
 import { reactive, computed } from 'vue'
 import { ORDER } from '../types/Order'
 import OrderTypes from './OrderTypes.vue';
+// @ts-ignore
+import mixpanel from 'mixpanel-figma'
 
 const state = reactive<{
   textString: string;
@@ -20,11 +22,18 @@ const isAllowGenerate = computed(() => {
 })
 
 function sanitizeInput() {
-  state.numberString = state.numberString.replace(/[^0-9\.]/g, '')
+  state.numberString = state.numberString.replace(/[^0-9]/g, '')
 }
 
 function handleGenerate () {
   if (!isAllowGenerate.value) return false
+
+  mixpanel.track('numeric generate', {
+    tab: 'numeric',
+    prefix: state.textString,
+    base_number: state.numberString,
+    order_type: state.orderType,
+  });
 
   const prefix = state.textString
   const baseNumber = state.numberString

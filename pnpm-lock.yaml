@@ -7,6 +7,9 @@ dependencies:
   dayjs:
     specifier: ^1.11.7
     version: 1.11.7
+  mixpanel-figma:
+    specifier: ^2.0.1
+    version: 2.0.1
   v-calendar:
     specifier: ^3.0.3
     version: 3.0.3(@popperjs/core@2.11.7)(vue@3.2.47)
@@ -1431,6 +1434,10 @@ packages:
     dependencies:
       brace-expansion: 2.0.1
     dev: true
+
+  /mixpanel-figma@2.0.1:
+    resolution: {integrity: sha512-p+xWU/dA04IqpjEOzdf3eZGCh3yWCZSc5SsmW2WZU4zTFh4p2h6OJmt7pqozYlXjY4p3+7BXmRFdoAand3uArw==}
+    dev: false
 
   /mrmime@1.0.1:
     resolution: {integrity: sha512-hzzEagAgDyoU1Q6yg5uI+AorQgdvMCur3FcKf7NhMKWsaYg+RnbTyHRa/9IlLF9rf455MOCtcqqrQQ83pPP7Uw==}

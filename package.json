@@ -12,6 +12,7 @@
   "dependencies": {
     "@popperjs/core": "^2.11.7",
     "dayjs": "^1.11.7",
+    "mixpanel-figma": "^2.0.1",
     "v-calendar": "^3.0.3",
     "vue": "^3.2.47"
   },

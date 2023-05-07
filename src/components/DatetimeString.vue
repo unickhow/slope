@@ -8,6 +8,8 @@ import OrderTypes from './OrderTypes.vue';
 import dayjs from 'dayjs'
 import { DateFormats } from '../types/DateFormats'
 import AppTooltip from './AppTooltip.vue';
+// @ts-ignore
+import mixpanel from 'mixpanel-figma'
 
 const state = reactive<{
   orderType: ORDER,
@@ -33,6 +35,11 @@ const dateFormatOptions = Object.entries(DateFormats).map(([key, value]) => ({
 }))
 
 function handleGenerate () {
+  mixpanel.track('datetime generate', {
+    tab: 'datetime',
+    order_type: state.orderType,
+    format: state.format
+  });
   const orderType = state.orderType
   parent.postMessage({
     pluginMessage: {
