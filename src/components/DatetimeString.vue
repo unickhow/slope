@@ -36,7 +36,7 @@ function handleGenerate () {
   const orderType = state.orderType
   parent.postMessage({
     pluginMessage: {
-      tab: 'datetime',
+      tab: 'dateTime',
       action: 'generate',
       orderType,
       selectedDate: state.selectedDate,
@@ -51,7 +51,7 @@ function handleCancel () {
 </script>
 
 <template>
-  <div class="datetime-string flex flex-col gap-6 m-4">
+  <div class="date-time-string flex flex-col gap-3 m-4">
     <DatePicker
       ref="datePicker"
       v-model.string="state.selectedDate"
@@ -82,7 +82,7 @@ function handleCancel () {
         class="justify-center" />
       <AppTooltip>
         <template #content>
-          <p class="text-center m-0">Generate order works on date only. <br>('M' part)</p>
+          <p class="text-center m-0">Generate order works on date only. ('D' part)</p>
         </template>
         <i class="i-mdi-alert-box text-primary block cursor-help" />
       </AppTooltip>

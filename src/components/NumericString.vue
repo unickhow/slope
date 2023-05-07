@@ -120,7 +120,7 @@ function handleCancel () {
       </div>
     </div> -->
 
-    <OrderTypes v-model="state.orderType" />
+    <OrderTypes v-model="state.orderType" class="justify-center" />
     <div class="flex gap-2 fixed bottom-0 left-0 w-full p-4 bg-white">
       <button
         id="cancelButton"

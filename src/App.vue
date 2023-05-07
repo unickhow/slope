@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import NumericString from './components/NumericString.vue';
-import DatetimeString from './components/DatetimeString.vue';
+import DateTimeString from './components/DateTimeString.vue';
 
 const tabs = [
   {
@@ -9,8 +9,8 @@ const tabs = [
     component: NumericString
   },
   {
-    name: 'Datetime',
-    component: DatetimeString
+    name: 'DateTime',
+    component: DateTimeString
   }
 ]
 
