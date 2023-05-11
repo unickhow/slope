@@ -17,8 +17,8 @@ const state = reactive<{
   format: DateFormats
 }>({
   orderType: ORDER.ASC,
-  selectedDate: dayjs().format(DateFormats.dL),
-  format: DateFormats.dL
+  selectedDate: dayjs().format(DateFormats.YMD_dash),
+  format: DateFormats.YMD_dash
 })
 
 const datePicker = ref(null)
@@ -47,7 +47,8 @@ function handleGenerate () {
       action: 'generate',
       orderType,
       selectedDate: state.selectedDate,
-      format: state.format
+      format: state.format,
+      formattedDate: dayjs(state.selectedDate).format(state.format)
     }
   }, '*')
 }

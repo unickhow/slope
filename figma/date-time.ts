@@ -12,8 +12,10 @@ function formatDate(date: Date, format: string): string {
   const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
   const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
+  // TODO: better way to handle this...
   const patterns = {
     'YYYY-MM-DD': `${year}-${(month).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`,
+    'YYYY/MM/DD': `${year}/${(month).toString().padStart(2, '0')}/${day.toString().padStart(2, '0')}`,
     'MM-DD-YYYY': `${(month).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}-${year}`,
     'MM/DD/YYYY': `${month.toString().padStart(2, '0')}/${day.toString().padStart(2, '0')}/${year}`,
     'MMMM DD, YYYY': `${months[date.getMonth()]} ${day}, ${year}`,

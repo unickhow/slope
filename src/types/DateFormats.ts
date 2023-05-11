@@ -1,7 +1,8 @@
 export enum DateFormats {
   // custom
-  dL = 'YYYY-MM-DD',
-  Ld = 'MM-DD-YYYY',
+  YMD_dash = 'YYYY-MM-DD',
+  YMD_slash = 'YYYY/MM/DD',
+  MDY_dash = 'MM-DD-YYYY',
   // common
   L = 'MM/DD/YYYY',
   LL = 'MMMM DD, YYYY',
