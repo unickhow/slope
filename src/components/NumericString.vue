@@ -52,7 +52,12 @@ function handleGenerate () {
 }
 
 function handleCancel () {
-  parent.postMessage({ pluginMessage: { action: 'cancel' } }, '*')
+  parent.postMessage({
+    pluginMessage: {
+      tab: 'numeric',
+      action: 'cancel'
+    }
+  }, '*')
 }
 </script>
 

@@ -54,7 +54,12 @@ function handleGenerate () {
 }
 
 function handleCancel () {
-  parent.postMessage({ pluginMessage: { action: 'cancel' } }, '*')
+  parent.postMessage({
+    pluginMessage: {
+      tab: 'dateTime',
+      action: 'cancel'
+    }
+  }, '*')
 }
 </script>
 
