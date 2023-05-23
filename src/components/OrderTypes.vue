@@ -17,11 +17,11 @@ const emit = defineEmits(['update:modelValue'])
 const orderTypes = computed(() => ([
   {
     name: ORDER.ASC,
-    icon: 'i-mdi-sort-numeric-ascending'
+    icon: 'i-mdi-arrow-up'
   },
   {
     name: ORDER.DESC,
-    icon: 'i-mdi-sort-numeric-descending'
+    icon: 'i-mdi-arrow-down'
   },
   ...(props.hideRandom ? [] : [{
     name: ORDER.RANDOM,
